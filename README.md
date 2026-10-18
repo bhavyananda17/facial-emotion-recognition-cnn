@@ -117,6 +117,26 @@ All 100 epochs ran (early stopping did not fire); the learning rate dropped to 1
 
 **Label coding check.** The RAF-DB folders are named `1`–`7`. Their sizes (1,619 / 355 / 877 / 5,957 / 2,460 / 867 / 3,204 images over train + test) match the published RAF-DB class totals, and sample faces from each folder agree (`results/rafdb/label_check.png`), giving 1 Surprise, 2 Fear, 3 Disgust, 4 Happy, 5 Sad, 6 Angry, 7 Neutral. The official notebook labels its plots Angry, Disgust, Fear, Happy, Sad, Surprise, Neutral, which is wrong for folders 1, 2, 3 and 6. Accuracy is unaffected; the notebook's per-class plots and tables are mislabelled. This repo uses the correct names everywhere.
 
+### FER2013, paper protocol (seed 42, Apple M5 Pro GPU)
+
+| | This run | Paper |
+|---|---|---|
+| Test accuracy | **65.3%** (4,688/7,178) | 64% |
+| Macro F1 / macro AUC | 0.613 / 0.910 | n/a |
+| Training time | 98.8 min (100 epochs, ~59 s/epoch) | n/a |
+
+All 100 epochs ran; the learning rate dropped to 1e-6 at epoch 46 and the best epoch by test loss was the last one. Happy (recall 0.87), Surprise (0.80) and Neutral (0.73) are easiest. **Fear (0.36) and Disgust (0.40) are hardest**; Disgust has only 436 training images, and 39% of Disgust test images are predicted as Angry. FER2013's labels are known to be noisy, so a ceiling in the 60s to low 70s is normal and 65% is not a model failure.
+
+**Independent evidence for the label mix-up in the paper's Table 4.** The notebook labels the sorted classes Angry, Disgust, Fear, Happy, Sad, Surprise, Neutral, but the real order is Angry, Disgust, Fear, Happy, **Neutral, Sad, Surprise**. If that is what happened, the paper's rows for Sad, Surprise and Neutral should belong to my Neutral, Sad and Surprise. They do (precision / recall):
+
+| Paper's row label | Paper (P / R) | My true class | Mine (P / R) |
+|---|---|---|---|
+| Sadness | 0.52 / 0.73 | **Neutral** | 0.521 / 0.732 |
+| Surprise | 0.56 / 0.44 | **Sad** | 0.582 / 0.455 |
+| Neutral | 0.74 / 0.80 | **Surprise** | 0.740 / 0.800 |
+
+The unaffected rows also agree (Happy 0.86 / 0.87 vs 0.862 / 0.874; Angry 0.53 / 0.60 vs 0.563 / 0.620; Fear 0.55 / 0.34 vs 0.557 / 0.356). The paper's accuracy is correct but its per-class labels are shifted.
+
 ### Watching a long run
 
 `python scripts/watch_training.py results/rafdb/paper/train.log` shows a live terminal dashboard (progress, ETA, one accuracy chart). It only reads the log.

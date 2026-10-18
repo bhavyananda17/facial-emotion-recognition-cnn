@@ -1,0 +1,313 @@
+=== fer2013 | protocol=paper | seed=42 | started 2026-10-18T20:56:52
+device: GPU (Apple Metal) ['/physical_device:GPU:0'] | TF 2.18.1 | Keras 3.8.0
+Found 25841 images belonging to 7 classes.
+Found 7178 images belonging to 7 classes.
+Model: "fer_separable_48x48"
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Layer (type)                    ┃ Output Shape           ┃       Param # ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ separable_conv2d                │ (None, 48, 48, 64)     │           137 │
+│ (SeparableConv2D)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization             │ (None, 48, 48, 64)     │           256 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ activation (Activation)         │ (None, 48, 48, 64)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ separable_conv2d_1              │ (None, 48, 48, 64)     │         4,736 │
+│ (SeparableConv2D)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization_1           │ (None, 48, 48, 64)     │           256 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ activation_1 (Activation)       │ (None, 48, 48, 64)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ max_pooling2d (MaxPooling2D)    │ (None, 24, 24, 64)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dropout (Dropout)               │ (None, 24, 24, 64)     │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ separable_conv2d_2              │ (None, 24, 24, 128)    │         8,896 │
+│ (SeparableConv2D)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization_2           │ (None, 24, 24, 128)    │           512 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ activation_2 (Activation)       │ (None, 24, 24, 128)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ separable_conv2d_3              │ (None, 24, 24, 128)    │        17,664 │
+│ (SeparableConv2D)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization_3           │ (None, 24, 24, 128)    │           512 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ activation_3 (Activation)       │ (None, 24, 24, 128)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ max_pooling2d_1 (MaxPooling2D)  │ (None, 12, 12, 128)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dropout_1 (Dropout)             │ (None, 12, 12, 128)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ separable_conv2d_4              │ (None, 12, 12, 256)    │        34,176 │
+│ (SeparableConv2D)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization_4           │ (None, 12, 12, 256)    │         1,024 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ activation_4 (Activation)       │ (None, 12, 12, 256)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ separable_conv2d_5              │ (None, 12, 12, 256)    │        68,096 │
+│ (SeparableConv2D)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization_5           │ (None, 12, 12, 256)    │         1,024 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ activation_5 (Activation)       │ (None, 12, 12, 256)    │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ max_pooling2d_2 (MaxPooling2D)  │ (None, 6, 6, 256)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dropout_2 (Dropout)             │ (None, 6, 6, 256)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ separable_conv2d_6              │ (None, 6, 6, 512)      │       133,888 │
+│ (SeparableConv2D)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization_6           │ (None, 6, 6, 512)      │         2,048 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ activation_6 (Activation)       │ (None, 6, 6, 512)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ separable_conv2d_7              │ (None, 6, 6, 512)      │       267,264 │
+│ (SeparableConv2D)               │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization_7           │ (None, 6, 6, 512)      │         2,048 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ activation_7 (Activation)       │ (None, 6, 6, 512)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ max_pooling2d_3 (MaxPooling2D)  │ (None, 3, 3, 512)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dropout_3 (Dropout)             │ (None, 3, 3, 512)      │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ flatten (Flatten)               │ (None, 4608)           │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense (Dense)                   │ (None, 512)            │     2,359,808 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ batch_normalization_8           │ (None, 512)            │         2,048 │
+│ (BatchNormalization)            │                        │               │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dropout_4 (Dropout)             │ (None, 512)            │             0 │
+├─────────────────────────────────┼────────────────────────┼───────────────┤
+│ dense_1 (Dense)                 │ (None, 7)              │         3,591 │
+└─────────────────────────────────┴────────────────────────┴───────────────┘
+ Total params: 2,907,984 (11.09 MB)
+ Trainable params: 2,903,120 (11.07 MB)
+ Non-trainable params: 4,864 (19.00 KB)
+
+train=25841  monitored (TEST set)=7178  test=7178
+Epoch 1/100
+808/808 - 58s - 72ms/step - accuracy: 0.2136 - loss: 2.2012 - val_accuracy: 0.2732 - val_loss: 1.8512 - learning_rate: 0.0010
+Epoch 2/100
+808/808 - 52s - 65ms/step - accuracy: 0.2616 - loss: 1.9000 - val_accuracy: 0.3286 - val_loss: 1.6738 - learning_rate: 0.0010
+Epoch 3/100
+808/808 - 52s - 65ms/step - accuracy: 0.3310 - loss: 1.7214 - val_accuracy: 0.4074 - val_loss: 1.5243 - learning_rate: 0.0010
+Epoch 4/100
+808/808 - 54s - 66ms/step - accuracy: 0.3933 - loss: 1.5613 - val_accuracy: 0.4543 - val_loss: 1.4220 - learning_rate: 0.0010
+Epoch 5/100
+808/808 - 53s - 65ms/step - accuracy: 0.4334 - loss: 1.4652 - val_accuracy: 0.4478 - val_loss: 1.5442 - learning_rate: 0.0010
+Epoch 6/100
+808/808 - 52s - 65ms/step - accuracy: 0.4646 - loss: 1.3997 - val_accuracy: 0.4905 - val_loss: 1.5048 - learning_rate: 0.0010
+Epoch 7/100
+808/808 - 53s - 66ms/step - accuracy: 0.4824 - loss: 1.3580 - val_accuracy: 0.5295 - val_loss: 1.2751 - learning_rate: 0.0010
+Epoch 8/100
+808/808 - 53s - 65ms/step - accuracy: 0.4971 - loss: 1.3154 - val_accuracy: 0.5194 - val_loss: 1.3141 - learning_rate: 0.0010
+Epoch 9/100
+808/808 - 53s - 65ms/step - accuracy: 0.5047 - loss: 1.2977 - val_accuracy: 0.4961 - val_loss: 1.4171 - learning_rate: 0.0010
+Epoch 10/100
+808/808 - 82s - 101ms/step - accuracy: 0.5174 - loss: 1.2695 - val_accuracy: 0.5272 - val_loss: 1.3661 - learning_rate: 0.0010
+Epoch 11/100
+808/808 - 53s - 65ms/step - accuracy: 0.5224 - loss: 1.2512 - val_accuracy: 0.5496 - val_loss: 1.2044 - learning_rate: 0.0010
+Epoch 12/100
+808/808 - 53s - 65ms/step - accuracy: 0.5338 - loss: 1.2352 - val_accuracy: 0.5646 - val_loss: 1.1331 - learning_rate: 0.0010
+Epoch 13/100
+808/808 - 53s - 66ms/step - accuracy: 0.5383 - loss: 1.2193 - val_accuracy: 0.5628 - val_loss: 1.1546 - learning_rate: 0.0010
+Epoch 14/100
+808/808 - 53s - 66ms/step - accuracy: 0.5439 - loss: 1.2079 - val_accuracy: 0.5740 - val_loss: 1.1266 - learning_rate: 0.0010
+Epoch 15/100
+808/808 - 53s - 65ms/step - accuracy: 0.5489 - loss: 1.1855 - val_accuracy: 0.5637 - val_loss: 1.1870 - learning_rate: 0.0010
+Epoch 16/100
+808/808 - 53s - 65ms/step - accuracy: 0.5562 - loss: 1.1752 - val_accuracy: 0.5548 - val_loss: 1.1807 - learning_rate: 0.0010
+Epoch 17/100
+808/808 - 53s - 66ms/step - accuracy: 0.5615 - loss: 1.1629 - val_accuracy: 0.5694 - val_loss: 1.1375 - learning_rate: 0.0010
+Epoch 18/100
+808/808 - 53s - 65ms/step - accuracy: 0.5701 - loss: 1.1485 - val_accuracy: 0.5858 - val_loss: 1.0955 - learning_rate: 0.0010
+Epoch 19/100
+808/808 - 53s - 66ms/step - accuracy: 0.5707 - loss: 1.1383 - val_accuracy: 0.5879 - val_loss: 1.1262 - learning_rate: 0.0010
+Epoch 20/100
+808/808 - 53s - 65ms/step - accuracy: 0.5730 - loss: 1.1274 - val_accuracy: 0.5543 - val_loss: 1.2549 - learning_rate: 0.0010
+Epoch 21/100
+808/808 - 53s - 66ms/step - accuracy: 0.5750 - loss: 1.1278 - val_accuracy: 0.5832 - val_loss: 1.1103 - learning_rate: 0.0010
+Epoch 22/100
+808/808 - 53s - 66ms/step - accuracy: 0.5854 - loss: 1.1051 - val_accuracy: 0.5815 - val_loss: 1.1350 - learning_rate: 0.0010
+Epoch 23/100
+808/808 - 53s - 65ms/step - accuracy: 0.5843 - loss: 1.1032 - val_accuracy: 0.5769 - val_loss: 1.1703 - learning_rate: 0.0010
+Epoch 24/100
+808/808 - 56s - 69ms/step - accuracy: 0.5877 - loss: 1.1007 - val_accuracy: 0.5945 - val_loss: 1.0832 - learning_rate: 0.0010
+Epoch 25/100
+808/808 - 61s - 76ms/step - accuracy: 0.5895 - loss: 1.0908 - val_accuracy: 0.5953 - val_loss: 1.1297 - learning_rate: 0.0010
+Epoch 26/100
+808/808 - 61s - 76ms/step - accuracy: 0.5946 - loss: 1.0802 - val_accuracy: 0.6013 - val_loss: 1.0735 - learning_rate: 0.0010
+Epoch 27/100
+808/808 - 61s - 76ms/step - accuracy: 0.5982 - loss: 1.0705 - val_accuracy: 0.6021 - val_loss: 1.0559 - learning_rate: 0.0010
+Epoch 28/100
+808/808 - 61s - 75ms/step - accuracy: 0.6013 - loss: 1.0630 - val_accuracy: 0.6167 - val_loss: 1.0292 - learning_rate: 0.0010
+Epoch 29/100
+808/808 - 61s - 75ms/step - accuracy: 0.6049 - loss: 1.0582 - val_accuracy: 0.6213 - val_loss: 1.0107 - learning_rate: 0.0010
+Epoch 30/100
+808/808 - 61s - 75ms/step - accuracy: 0.6025 - loss: 1.0598 - val_accuracy: 0.6088 - val_loss: 1.0413 - learning_rate: 0.0010
+Epoch 31/100
+808/808 - 61s - 76ms/step - accuracy: 0.6088 - loss: 1.0420 - val_accuracy: 0.5829 - val_loss: 1.1133 - learning_rate: 0.0010
+Epoch 32/100
+808/808 - 61s - 76ms/step - accuracy: 0.6071 - loss: 1.0439 - val_accuracy: 0.6243 - val_loss: 1.0050 - learning_rate: 0.0010
+Epoch 33/100
+808/808 - 61s - 76ms/step - accuracy: 0.6074 - loss: 1.0433 - val_accuracy: 0.5967 - val_loss: 1.1057 - learning_rate: 0.0010
+Epoch 34/100
+808/808 - 61s - 76ms/step - accuracy: 0.6136 - loss: 1.0291 - val_accuracy: 0.6356 - val_loss: 0.9799 - learning_rate: 0.0010
+Epoch 35/100
+808/808 - 61s - 76ms/step - accuracy: 0.6168 - loss: 1.0292 - val_accuracy: 0.6162 - val_loss: 1.0478 - learning_rate: 0.0010
+Epoch 36/100
+808/808 - 61s - 76ms/step - accuracy: 0.6134 - loss: 1.0307 - val_accuracy: 0.6336 - val_loss: 0.9792 - learning_rate: 0.0010
+Epoch 37/100
+808/808 - 61s - 75ms/step - accuracy: 0.6213 - loss: 1.0096 - val_accuracy: 0.6193 - val_loss: 1.0474 - learning_rate: 0.0010
+Epoch 38/100
+808/808 - 62s - 76ms/step - accuracy: 0.6204 - loss: 1.0140 - val_accuracy: 0.6220 - val_loss: 1.0109 - learning_rate: 0.0010
+Epoch 39/100
+808/808 - 61s - 76ms/step - accuracy: 0.6218 - loss: 1.0125 - val_accuracy: 0.6190 - val_loss: 1.0513 - learning_rate: 0.0010
+Epoch 40/100
+808/808 - 61s - 76ms/step - accuracy: 0.6251 - loss: 1.0099 - val_accuracy: 0.6130 - val_loss: 1.0474 - learning_rate: 0.0010
+Epoch 41/100
+808/808 - 61s - 76ms/step - accuracy: 0.6240 - loss: 1.0097 - val_accuracy: 0.6170 - val_loss: 1.0441 - learning_rate: 0.0010
+Epoch 42/100
+808/808 - 61s - 76ms/step - accuracy: 0.6265 - loss: 1.0015 - val_accuracy: 0.6053 - val_loss: 1.0668 - learning_rate: 0.0010
+Epoch 43/100
+808/808 - 61s - 76ms/step - accuracy: 0.6300 - loss: 0.9940 - val_accuracy: 0.6212 - val_loss: 1.0175 - learning_rate: 0.0010
+Epoch 44/100
+808/808 - 61s - 75ms/step - accuracy: 0.6309 - loss: 0.9925 - val_accuracy: 0.6342 - val_loss: 0.9824 - learning_rate: 0.0010
+Epoch 45/100
+808/808 - 61s - 76ms/step - accuracy: 0.6303 - loss: 0.9934 - val_accuracy: 0.6259 - val_loss: 1.0169 - learning_rate: 0.0010
+Epoch 46/100
+
+Epoch 46: ReduceLROnPlateau reducing learning rate to 1.0000000474974512e-06.
+808/808 - 61s - 76ms/step - accuracy: 0.6317 - loss: 0.9898 - val_accuracy: 0.6166 - val_loss: 1.0463 - learning_rate: 0.0010
+Epoch 47/100
+808/808 - 61s - 75ms/step - accuracy: 0.6366 - loss: 0.9748 - val_accuracy: 0.6436 - val_loss: 0.9759 - learning_rate: 1.0000e-06
+Epoch 48/100
+808/808 - 61s - 75ms/step - accuracy: 0.6430 - loss: 0.9705 - val_accuracy: 0.6441 - val_loss: 0.9755 - learning_rate: 1.0000e-06
+Epoch 49/100
+808/808 - 61s - 76ms/step - accuracy: 0.6449 - loss: 0.9656 - val_accuracy: 0.6452 - val_loss: 0.9749 - learning_rate: 1.0000e-06
+Epoch 50/100
+808/808 - 61s - 76ms/step - accuracy: 0.6401 - loss: 0.9674 - val_accuracy: 0.6450 - val_loss: 0.9763 - learning_rate: 1.0000e-06
+Epoch 51/100
+808/808 - 61s - 76ms/step - accuracy: 0.6409 - loss: 0.9657 - val_accuracy: 0.6457 - val_loss: 0.9725 - learning_rate: 1.0000e-06
+Epoch 52/100
+808/808 - 61s - 76ms/step - accuracy: 0.6423 - loss: 0.9619 - val_accuracy: 0.6453 - val_loss: 0.9717 - learning_rate: 1.0000e-06
+Epoch 53/100
+808/808 - 61s - 76ms/step - accuracy: 0.6393 - loss: 0.9654 - val_accuracy: 0.6482 - val_loss: 0.9712 - learning_rate: 1.0000e-06
+Epoch 54/100
+808/808 - 61s - 76ms/step - accuracy: 0.6401 - loss: 0.9672 - val_accuracy: 0.6474 - val_loss: 0.9691 - learning_rate: 1.0000e-06
+Epoch 55/100
+808/808 - 61s - 76ms/step - accuracy: 0.6422 - loss: 0.9665 - val_accuracy: 0.6467 - val_loss: 0.9726 - learning_rate: 1.0000e-06
+Epoch 56/100
+808/808 - 61s - 76ms/step - accuracy: 0.6447 - loss: 0.9552 - val_accuracy: 0.6468 - val_loss: 0.9714 - learning_rate: 1.0000e-06
+Epoch 57/100
+808/808 - 61s - 75ms/step - accuracy: 0.6442 - loss: 0.9626 - val_accuracy: 0.6480 - val_loss: 0.9683 - learning_rate: 1.0000e-06
+Epoch 58/100
+808/808 - 62s - 76ms/step - accuracy: 0.6440 - loss: 0.9616 - val_accuracy: 0.6477 - val_loss: 0.9681 - learning_rate: 1.0000e-06
+Epoch 59/100
+808/808 - 63s - 77ms/step - accuracy: 0.6457 - loss: 0.9550 - val_accuracy: 0.6477 - val_loss: 0.9663 - learning_rate: 1.0000e-06
+Epoch 60/100
+808/808 - 61s - 76ms/step - accuracy: 0.6448 - loss: 0.9534 - val_accuracy: 0.6470 - val_loss: 0.9690 - learning_rate: 1.0000e-06
+Epoch 61/100
+808/808 - 62s - 76ms/step - accuracy: 0.6475 - loss: 0.9524 - val_accuracy: 0.6478 - val_loss: 0.9654 - learning_rate: 1.0000e-06
+Epoch 62/100
+808/808 - 64s - 79ms/step - accuracy: 0.6461 - loss: 0.9546 - val_accuracy: 0.6489 - val_loss: 0.9645 - learning_rate: 1.0000e-06
+Epoch 63/100
+808/808 - 66s - 81ms/step - accuracy: 0.6421 - loss: 0.9586 - val_accuracy: 0.6468 - val_loss: 0.9660 - learning_rate: 1.0000e-06
+Epoch 64/100
+808/808 - 71s - 88ms/step - accuracy: 0.6421 - loss: 0.9585 - val_accuracy: 0.6492 - val_loss: 0.9643 - learning_rate: 1.0000e-06
+Epoch 65/100
+808/808 - 66s - 82ms/step - accuracy: 0.6442 - loss: 0.9598 - val_accuracy: 0.6496 - val_loss: 0.9642 - learning_rate: 1.0000e-06
+Epoch 66/100
+808/808 - 60s - 74ms/step - accuracy: 0.6431 - loss: 0.9586 - val_accuracy: 0.6491 - val_loss: 0.9658 - learning_rate: 1.0000e-06
+Epoch 67/100
+808/808 - 61s - 75ms/step - accuracy: 0.6443 - loss: 0.9536 - val_accuracy: 0.6491 - val_loss: 0.9639 - learning_rate: 1.0000e-06
+Epoch 68/100
+808/808 - 61s - 75ms/step - accuracy: 0.6467 - loss: 0.9478 - val_accuracy: 0.6503 - val_loss: 0.9647 - learning_rate: 1.0000e-06
+Epoch 69/100
+808/808 - 61s - 76ms/step - accuracy: 0.6502 - loss: 0.9472 - val_accuracy: 0.6506 - val_loss: 0.9640 - learning_rate: 1.0000e-06
+Epoch 70/100
+808/808 - 60s - 75ms/step - accuracy: 0.6429 - loss: 0.9547 - val_accuracy: 0.6500 - val_loss: 0.9633 - learning_rate: 1.0000e-06
+Epoch 71/100
+808/808 - 70s - 86ms/step - accuracy: 0.6449 - loss: 0.9608 - val_accuracy: 0.6496 - val_loss: 0.9630 - learning_rate: 1.0000e-06
+Epoch 72/100
+808/808 - 65s - 80ms/step - accuracy: 0.6453 - loss: 0.9527 - val_accuracy: 0.6510 - val_loss: 0.9642 - learning_rate: 1.0000e-06
+Epoch 73/100
+808/808 - 64s - 80ms/step - accuracy: 0.6457 - loss: 0.9576 - val_accuracy: 0.6503 - val_loss: 0.9639 - learning_rate: 1.0000e-06
+Epoch 74/100
+808/808 - 64s - 80ms/step - accuracy: 0.6438 - loss: 0.9562 - val_accuracy: 0.6510 - val_loss: 0.9616 - learning_rate: 1.0000e-06
+Epoch 75/100
+808/808 - 64s - 79ms/step - accuracy: 0.6480 - loss: 0.9469 - val_accuracy: 0.6517 - val_loss: 0.9612 - learning_rate: 1.0000e-06
+Epoch 76/100
+808/808 - 64s - 80ms/step - accuracy: 0.6436 - loss: 0.9517 - val_accuracy: 0.6510 - val_loss: 0.9617 - learning_rate: 1.0000e-06
+Epoch 77/100
+808/808 - 65s - 80ms/step - accuracy: 0.6457 - loss: 0.9518 - val_accuracy: 0.6513 - val_loss: 0.9608 - learning_rate: 1.0000e-06
+Epoch 78/100
+808/808 - 68s - 84ms/step - accuracy: 0.6482 - loss: 0.9544 - val_accuracy: 0.6510 - val_loss: 0.9620 - learning_rate: 1.0000e-06
+Epoch 79/100
+808/808 - 61s - 75ms/step - accuracy: 0.6459 - loss: 0.9493 - val_accuracy: 0.6517 - val_loss: 0.9590 - learning_rate: 1.0000e-06
+Epoch 80/100
+808/808 - 61s - 76ms/step - accuracy: 0.6483 - loss: 0.9490 - val_accuracy: 0.6513 - val_loss: 0.9615 - learning_rate: 1.0000e-06
+Epoch 81/100
+808/808 - 56s - 69ms/step - accuracy: 0.6494 - loss: 0.9491 - val_accuracy: 0.6523 - val_loss: 0.9588 - learning_rate: 1.0000e-06
+Epoch 82/100
+808/808 - 59s - 72ms/step - accuracy: 0.6476 - loss: 0.9539 - val_accuracy: 0.6510 - val_loss: 0.9591 - learning_rate: 1.0000e-06
+Epoch 83/100
+808/808 - 61s - 76ms/step - accuracy: 0.6484 - loss: 0.9473 - val_accuracy: 0.6509 - val_loss: 0.9618 - learning_rate: 1.0000e-06
+Epoch 84/100
+808/808 - 60s - 74ms/step - accuracy: 0.6495 - loss: 0.9468 - val_accuracy: 0.6520 - val_loss: 0.9615 - learning_rate: 1.0000e-06
+Epoch 85/100
+808/808 - 59s - 74ms/step - accuracy: 0.6501 - loss: 0.9452 - val_accuracy: 0.6520 - val_loss: 0.9594 - learning_rate: 1.0000e-06
+Epoch 86/100
+808/808 - 59s - 73ms/step - accuracy: 0.6447 - loss: 0.9495 - val_accuracy: 0.6510 - val_loss: 0.9596 - learning_rate: 1.0000e-06
+Epoch 87/100
+808/808 - 63s - 78ms/step - accuracy: 0.6457 - loss: 0.9511 - val_accuracy: 0.6519 - val_loss: 0.9592 - learning_rate: 1.0000e-06
+Epoch 88/100
+808/808 - 61s - 75ms/step - accuracy: 0.6512 - loss: 0.9431 - val_accuracy: 0.6523 - val_loss: 0.9573 - learning_rate: 1.0000e-06
+Epoch 89/100
+808/808 - 61s - 75ms/step - accuracy: 0.6497 - loss: 0.9419 - val_accuracy: 0.6523 - val_loss: 0.9585 - learning_rate: 1.0000e-06
+Epoch 90/100
+808/808 - 60s - 74ms/step - accuracy: 0.6505 - loss: 0.9430 - val_accuracy: 0.6516 - val_loss: 0.9586 - learning_rate: 1.0000e-06
+Epoch 91/100
+808/808 - 60s - 75ms/step - accuracy: 0.6509 - loss: 0.9425 - val_accuracy: 0.6509 - val_loss: 0.9600 - learning_rate: 1.0000e-06
+Epoch 92/100
+808/808 - 61s - 76ms/step - accuracy: 0.6513 - loss: 0.9482 - val_accuracy: 0.6523 - val_loss: 0.9576 - learning_rate: 1.0000e-06
+Epoch 93/100
+808/808 - 54s - 67ms/step - accuracy: 0.6486 - loss: 0.9472 - val_accuracy: 0.6528 - val_loss: 0.9576 - learning_rate: 1.0000e-06
+Epoch 94/100
+808/808 - 53s - 65ms/step - accuracy: 0.6478 - loss: 0.9398 - val_accuracy: 0.6514 - val_loss: 0.9581 - learning_rate: 1.0000e-06
+Epoch 95/100
+808/808 - 53s - 65ms/step - accuracy: 0.6483 - loss: 0.9446 - val_accuracy: 0.6524 - val_loss: 0.9585 - learning_rate: 1.0000e-06
+Epoch 96/100
+808/808 - 53s - 65ms/step - accuracy: 0.6503 - loss: 0.9404 - val_accuracy: 0.6525 - val_loss: 0.9556 - learning_rate: 1.0000e-06
+Epoch 97/100
+808/808 - 53s - 65ms/step - accuracy: 0.6531 - loss: 0.9425 - val_accuracy: 0.6513 - val_loss: 0.9585 - learning_rate: 1.0000e-06
+Epoch 98/100
+808/808 - 54s - 66ms/step - accuracy: 0.6533 - loss: 0.9393 - val_accuracy: 0.6516 - val_loss: 0.9565 - learning_rate: 1.0000e-06
+Epoch 99/100
+808/808 - 53s - 66ms/step - accuracy: 0.6466 - loss: 0.9453 - val_accuracy: 0.6531 - val_loss: 0.9562 - learning_rate: 1.0000e-06
+Epoch 100/100
+808/808 - 53s - 65ms/step - accuracy: 0.6477 - loss: 0.9473 - val_accuracy: 0.6532 - val_loss: 0.9546 - learning_rate: 1.0000e-06
+Restoring model weights from the end of the best epoch: 100.
+
+training finished: 100 epochs in 98.8 min, best epoch 100
+
+TEST ACCURACY: 0.6532  (paper reports 0.64)
+macro F1 0.613 | macro AUC 0.910
+outputs in results/fer2013/paper, model in models/fer2013_paper.keras

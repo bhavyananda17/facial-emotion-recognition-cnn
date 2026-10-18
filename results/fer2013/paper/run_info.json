@@ -1,0 +1,42 @@
+{
+  "dataset": "fer2013",
+  "protocol": "paper",
+  "run_name": "paper",
+  "config": "configs/fer2013.yaml",
+  "started": "2026-10-18T20:56:52",
+  "git_commit": "d27c14f",
+  "seed": 42,
+  "total_params": 2907984,
+  "trainable_params": 2903120,
+  "paper_total_params": 2907984,
+  "train_images": 25841,
+  "monitored_images": 7178,
+  "test_images": 7178,
+  "training_time_seconds": 5930.7,
+  "epochs_max": 100,
+  "epochs_run": 100,
+  "best_epoch": 100,
+  "stopped_early": false,
+  "final_learning_rate": 9.999999974752427e-07,
+  "device": {
+    "device": "GPU (Apple Metal)",
+    "gpus": [
+      "/physical_device:GPU:0"
+    ],
+    "machine": "arm64",
+    "processor": "arm",
+    "os": "macOS 26.6.2",
+    "python": "3.11.15",
+    "tensorflow": "2.18.1",
+    "keras": "3.8.0"
+  },
+  "metrics": {
+    "test_accuracy": 0.6532460295346894,
+    "test_loss": 0.9545938968658447,
+    "macro_f1": 0.612883764562792,
+    "weighted_f1": 0.6455171289874582,
+    "macro_auc": 0.9100701348710547,
+    "n_test_images": 7178,
+    "paper_accuracy": 0.64
+  }
+}
