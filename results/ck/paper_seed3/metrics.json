@@ -1,0 +1,27 @@
+{
+  "test_accuracy": 0.9545454545454546,
+  "test_loss": 0.09832113236188889,
+  "macro_f1": 0.9189371247520536,
+  "weighted_f1": 0.9543863254235074,
+  "macro_auc": 0.9986959821926334,
+  "auc_per_class": {
+    "Anger": 0.9993502274204029,
+    "Contempt": 0.9961108410306271,
+    "Disgust": 1.0,
+    "Fear": 0.9996357012750455,
+    "Happy": 1.0,
+    "Sadness": 0.9957751056223594,
+    "Surprise": 1.0
+  },
+  "recall_per_class": {
+    "Anger": 0.9259259259259259,
+    "Contempt": 0.6363636363636364,
+    "Disgust": 1.0,
+    "Fear": 0.9333333333333333,
+    "Happy": 1.0,
+    "Sadness": 1.0,
+    "Surprise": 0.96
+  },
+  "n_test_images": 198,
+  "paper_accuracy": 0.95
+}

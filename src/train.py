@@ -53,13 +53,18 @@ def main():
     p.add_argument("--config", required=True, help="e.g. configs/ck.yaml")
     p.add_argument("--protocol", required=True, choices=["paper", "clean"])
     p.add_argument("--epochs", type=int, help="override the config's epochs (only for quick tests)")
+    p.add_argument("--seed", type=int, help="training seed instead of the config's 42 (weights, augmentation, "
+                                            "shuffling). The CK+ split keeps its own fixed seed. Results go to "
+                                            "<protocol>_seed<N>/ so the headline run is never overwritten.")
     p.add_argument("--run-name", help="output folder name instead of the protocol (only for quick tests)")
     args = p.parse_args()
 
     cfg = load_config(args.config)
     if args.epochs:
         cfg["training"]["epochs"] = args.epochs
-    run = args.run_name or args.protocol
+    if args.seed is not None:
+        cfg["training"]["seed"] = args.seed
+    run = args.run_name or (f"{args.protocol}_seed{args.seed}" if args.seed is not None else args.protocol)
     out_dir = ROOT / "results" / cfg["dataset"] / run
     out_dir.mkdir(parents=True, exist_ok=True)
     sys.stdout = Tee(out_dir / "train.log")

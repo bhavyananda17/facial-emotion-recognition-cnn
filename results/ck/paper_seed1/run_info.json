@@ -1,0 +1,42 @@
+{
+  "dataset": "ck",
+  "protocol": "paper",
+  "run_name": "paper_seed1",
+  "config": "configs/ck.yaml",
+  "started": "2026-10-18T22:50:53",
+  "git_commit": "a1e9a9c",
+  "seed": 1,
+  "total_params": 7057351,
+  "trainable_params": 7052487,
+  "paper_total_params": 7057351,
+  "train_images": 708,
+  "monitored_images": 198,
+  "test_images": 198,
+  "training_time_seconds": 82.2,
+  "epochs_max": 100,
+  "epochs_run": 64,
+  "best_epoch": 39,
+  "stopped_early": true,
+  "final_learning_rate": 9.999999717180685e-10,
+  "device": {
+    "device": "GPU (Apple Metal)",
+    "gpus": [
+      "/physical_device:GPU:0"
+    ],
+    "machine": "arm64",
+    "processor": "arm",
+    "os": "macOS 26.6.2",
+    "python": "3.11.15",
+    "tensorflow": "2.18.1",
+    "keras": "3.8.0"
+  },
+  "metrics": {
+    "test_accuracy": 0.9444444444444444,
+    "test_loss": 0.15768788754940033,
+    "macro_f1": 0.9114422918770745,
+    "weighted_f1": 0.9438903412058879,
+    "macro_auc": 0.9970146515604865,
+    "n_test_images": 198,
+    "paper_accuracy": 0.95
+  }
+}

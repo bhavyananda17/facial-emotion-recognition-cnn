@@ -148,7 +148,21 @@ Same model, same 708 training images, same seed, same test set. The only change 
 | Epochs run / best epoch | 100 / 87 | 56 (early stopping fired) / 31 |
 | Training time | 2.2 min | 1.2 min |
 
-Under the clean protocol 7 more test images are misclassified. **Read this with care:** it is one seed and a 198-image test set, so a 95% interval on either accuracy is roughly ±3 to ±4 points and the two intervals overlap. The gap is consistent with the leakage argument (the paper protocol picks its best epoch using the test set) but a single run cannot prove it; repeating over several seeds would. The clean number is also still optimistic, because 91% of CK+ test images have a sibling frame in training (see above).
+At seed 42 the clean protocol misclassifies 7 more test images. **That single gap turned out not to be representative** (next section).
+
+#### Is the gap real? Four training seeds
+
+`python -m src.train ... --seed N` changes only the training randomness (weights, augmentation, batch order); the CK+ split stays fixed at seed 42, so every run is scored on the same 198 images. `python scripts/summarize_seeds.py ck` writes `results/ck/multi_seed.md`.
+
+| Seed | Paper protocol | Clean protocol | Gap (paper − clean) |
+|---|---|---|---|
+| 1 | 94.4% | 96.0% | −1.5 pts |
+| 2 | 94.9% | 92.9% | +2.0 pts |
+| 3 | 95.5% | 96.5% | −1.0 pts |
+| 42 (headline) | 94.4% | 90.9% | +3.5 pts |
+| **Mean ± std** | **94.8 ± 0.5%** | **94.1 ± 2.6%** | **+0.8 ± 2.4 pts** |
+
+The paper protocol came out ahead in only 2 of 4 seeds, and the mean gap (+0.8) is smaller than its own spread (2.4). **On CK+ we cannot detect an effect of using the test set for early stopping**: the signal is smaller than the noise from the random seed. Two things make this plausible rather than surprising. (1) The paper-protocol results are very stable (std 0.5) and the clean ones are noisy (std 2.6), because the clean run chooses its stopping point from a validation slice of only 75 images. (2) The test set itself is leaky in a way neither protocol fixes: 91% of CK+ test images have a sibling frame in training, so the test set is easy for both. The leakage in the paper's *protocol* is real in principle, but on this dataset and model it does not measurably change the reported accuracy. Only four seeds and one fixed 198-image split were tested, so smaller effects cannot be ruled out.
 
 ### Watching a long run
 
