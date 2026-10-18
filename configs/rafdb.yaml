@@ -16,7 +16,7 @@ image:
 # Folders are named 1..7. Sorted order is 1..7, so index 0 = folder "1".
 # Names follow the official RAF-DB coding (1 Surprise ... 7 Neutral).
 # NOTE: the notebook maps index 0..6 to Angry, Disgust, Fear, Happy, Sad,
-# Surprise, Neutral, which is wrong for 5 of 7 classes. See README.
+# Surprise, Neutral, which is wrong for 4 of 7 (folders 1, 2, 3 and 6). See README.
 classes:
   "1": Surprise
   "2": Fear

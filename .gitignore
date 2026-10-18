@@ -23,3 +23,6 @@ kaggle.json
 .idea/
 .vscode/
 .ipynb_checkpoints/
+
+# Personal viva/presentation prep notes (local only)
+prep/

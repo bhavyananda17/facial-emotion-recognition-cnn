@@ -105,6 +105,22 @@ Things worth knowing when reading the curves:
 - **The learning rate collapses.** `ReduceLROnPlateau(factor=0.001)` multiplies the rate by 0.001, not 0.1: it falls from 1e-3 to 1e-6 at epoch 38, 1e-9 at epoch 82 and 1e-12 at epoch 97, so the model is effectively frozen after epoch ~40. This matches the notebook's own log (its learning rate also reaches 1e-6).
 - **Test accuracy (94%) is above training accuracy (88%).** Training accuracy is measured with dropout and augmentation switched on, and the monitored test images are near-duplicates of training frames (see the CK+ leakage note above).
 
+### RAF-DB, paper protocol (seed 42, Apple M5 Pro GPU)
+
+| | This run | Paper |
+|---|---|---|
+| Test accuracy | **83.0%** (2,546/3,068) | 83% |
+| Macro F1 / macro AUC | 0.748 / 0.967 | n/a |
+| Training time | 80.9 min (100 epochs, ~49 s/epoch) | n/a |
+
+All 100 epochs ran (early stopping did not fire); the learning rate dropped to 1e-6 at epoch 45 and 1e-9 at epoch 96, and the best epoch by test loss was 99. Happy is easiest (recall 0.90); **Disgust (0.47) and Fear (0.55) are hardest**, and they are also the two smallest classes (717 and 281 training images against 4,772 for Happy). Disgust is most often mistaken for Neutral (21%) and Sad (14%).
+
+**Label coding check.** The RAF-DB folders are named `1`–`7`. Their sizes (1,619 / 355 / 877 / 5,957 / 2,460 / 867 / 3,204 images over train + test) match the published RAF-DB class totals, and sample faces from each folder agree (`results/rafdb/label_check.png`), giving 1 Surprise, 2 Fear, 3 Disgust, 4 Happy, 5 Sad, 6 Angry, 7 Neutral. The official notebook labels its plots Angry, Disgust, Fear, Happy, Sad, Surprise, Neutral, which is wrong for folders 1, 2, 3 and 6. Accuracy is unaffected; the notebook's per-class plots and tables are mislabelled. This repo uses the correct names everywhere.
+
+### Watching a long run
+
+`python scripts/watch_training.py results/rafdb/paper/train.log` shows a live terminal dashboard (progress, ETA, one accuracy chart). It only reads the log.
+
 ## Project layout
 
 ```

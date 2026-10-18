@@ -1,0 +1,42 @@
+{
+  "dataset": "rafdb",
+  "protocol": "paper",
+  "run_name": "paper",
+  "config": "configs/rafdb.yaml",
+  "started": "2026-10-18T19:32:02",
+  "git_commit": "66c919b",
+  "seed": 42,
+  "total_params": 9985872,
+  "trainable_params": 9981008,
+  "paper_total_params": 9985872,
+  "train_images": 11046,
+  "monitored_images": 3068,
+  "test_images": 3068,
+  "training_time_seconds": 4851.9,
+  "epochs_max": 100,
+  "epochs_run": 100,
+  "best_epoch": 99,
+  "stopped_early": false,
+  "final_learning_rate": 9.999999717180685e-10,
+  "device": {
+    "device": "GPU (Apple Metal)",
+    "gpus": [
+      "/physical_device:GPU:0"
+    ],
+    "machine": "arm64",
+    "processor": "arm",
+    "os": "macOS 26.6.2",
+    "python": "3.11.15",
+    "tensorflow": "2.18.1",
+    "keras": "3.8.0"
+  },
+  "metrics": {
+    "test_accuracy": 0.8298565840938722,
+    "test_loss": 0.507476806640625,
+    "macro_f1": 0.7482738796128742,
+    "weighted_f1": 0.8295937963037404,
+    "macro_auc": 0.9672410847221703,
+    "n_test_images": 3068,
+    "paper_accuracy": 0.83
+  }
+}
