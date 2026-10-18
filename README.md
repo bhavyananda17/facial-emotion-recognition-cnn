@@ -75,6 +75,36 @@ These counts equal the ones in the official notebook's output (708 / 198) and th
 - `clean`: the held-out slice (`subset='validation'`, rescale only, a stratified 10% of every class) is monitored instead. The test set is only used for the final evaluation.
 - `check_class_order` stops the run if Keras' class order differs from the config.
 
+## Training and evaluation
+
+```bash
+python -m src.model                                              # check parameter counts vs the notebooks
+python -m src.train --config configs/ck.yaml --protocol paper    # train + evaluate, writes results/ck/paper/
+python -m src.evaluate --config configs/ck.yaml --protocol paper # re-evaluate a saved model
+```
+
+Each run writes to `results/<dataset>/<protocol>/`: `training_curves.png`, `confusion_matrix_counts.png`, `confusion_matrix_normalised.png`, `roc_curves.png` (one-vs-rest, per-class AUC), `sample_predictions.png` (green = correct, red = wrong), `classification_report.{txt,csv,json}`, `predictions.csv`, `metrics.json`, `model_summary.txt`, `history.csv`, `train.log` and `run_info.json` (parameters, training time, epochs, device, git commit). Models are saved to `models/<dataset>_<protocol>.keras`.
+
+`src/model.py` reproduces the notebooks' parameter counts exactly: 7,057,351 (CK+), 2,907,984 (FER2013), 9,985,872 (RAF-DB).
+
+## Results
+
+### CK+, paper protocol (seed 42, Apple M5 Pro GPU)
+
+| | This run | Paper |
+|---|---|---|
+| Test accuracy | **94.4%** (187/198) | 95% |
+| Macro F1 / macro AUC | 0.924 / 0.998 | n/a |
+| Training time | 2.2 min (100 epochs, ~1.3 s/epoch) | n/a |
+
+Weakest class is Sadness (recall 0.71; 4 of 17 predicted as Anger). Details are in `results/ck/paper/`.
+
+Things worth knowing when reading the curves:
+
+- **Early stopping never fired.** All 100 epochs ran. The best epoch (87) was chosen by the *test* loss, which is what `restore_best_weights` restores.
+- **The learning rate collapses.** `ReduceLROnPlateau(factor=0.001)` multiplies the rate by 0.001, not 0.1: it falls from 1e-3 to 1e-6 at epoch 38, 1e-9 at epoch 82 and 1e-12 at epoch 97, so the model is effectively frozen after epoch ~40. This matches the notebook's own log (its learning rate also reaches 1e-6).
+- **Test accuracy (94%) is above training accuracy (88%).** Training accuracy is measured with dropout and augmentation switched on, and the monitored test images are near-duplicates of training frames (see the CK+ leakage note above).
+
 ## Project layout
 
 ```
