@@ -168,6 +168,27 @@ The paper protocol came out ahead in only 2 of 4 seeds, and the mean gap (+0.8) 
 
 `python scripts/watch_training.py results/rafdb/paper/train.log` shows a live terminal dashboard (progress, ETA, one accuracy chart). It only reads the log.
 
+## Prediction and webcam demo
+
+```bash
+python -m src.predict path/to/cropped_face.jpg                           # one image, top-3 classes
+python -m src.predict face.jpg --config configs/rafdb.yaml --protocol paper
+python -m src.webcam_demo                                                # live webcam, press q to quit
+python -m src.webcam_demo --source video.mp4                             # or a video file
+```
+
+On macOS the first run asks permission for your terminal app to use the camera (System Settings, Privacy & Security, Camera).
+
+**Pipeline** (`src/webcam_demo.py`): camera frame → OpenCV Haar cascade finds faces → crop the largest → grayscale → resize to the model's input (`cv2.INTER_AREA`) → divide by 255 → CNN → softmax → label and confidence drawn on the video, plus a bar per class and the frame rate. Predictions are averaged over the last 5 frames so the label does not flicker, and only the largest face is classified.
+
+**Default model: FER2013** (set at the top of `src/predict.py`). Its training images are small in-the-wild grayscale faces, the closest match to a webcam crop, and it has a Neutral class, which CK+ lacks. CK+ is posed, frontal lab data and RAF-DB is the alternative via `--config configs/rafdb.yaml`. This choice is reasoned from the data, not yet validated live, so try both models on yourself.
+
+**Checks done without a camera:**
+- `predict.py`'s preprocessing gives the same class as the training-time evaluation for 200 of 200 FER2013 test images, so the demo feeds the model what it was trained on.
+- Haar face detection found the face in 100/100 padded CK+ stills but only 73/100 FER2013 and 71/100 RAF-DB stills (small, noisy crops), so expect missed detections in poor light or at an angle.
+- The softmax confidence shown is not a calibrated probability; a model can be confident and wrong.
+- Frame rate on live video has not been measured yet.
+
 ## Project layout
 
 ```
