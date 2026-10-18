@@ -1,0 +1,9 @@
+{
+  "test_images_with_sibling_frame_in_train": 180,
+  "fraction": 0.9090909090909091,
+  "test_images_with_same_subject_in_train": 195,
+  "fraction_same_subject": 0.9848484848484849,
+  "seed": 42,
+  "train_images": 783,
+  "test_images": 198
+}

@@ -42,6 +42,39 @@ matmul 4096x4096 on /CPU:0: 0.100 s
 - **Keras is pinned to 3.8.0.** TF 2.18 only requires `keras>=3.5`, so pip would otherwise install the newest Keras (3.15 at the time of writing). Pinning keeps the environment close to what TF 2.18 was released with.
 - On the Metal GPU, the `SeparableConv2D` layers (FER2013, RAF-DB) run slower than `Conv2D` at 48×48. At 100×100 the GPU is still faster than the CPU (131 vs 181 ms/step in a synthetic benchmark).
 
+## Data
+
+Datasets come from Kaggle (the links in the paper's Data availability section) and are git-ignored. Put your Kaggle credentials in `~/.kaggle/kaggle.json` or `~/.kaggle/access_token`, then:
+
+```bash
+python -m src.data --config configs/ck.yaml --download   # fetch into data/ck/raw
+python -m src.data --config configs/ck.yaml --split      # CK+ only: seeded 80/20 split
+python -m src.data --config configs/ck.yaml --inspect    # image counts and class order
+```
+
+FER2013 and RAF-DB already ship with train/test folders, so they only need `--download`.
+
+### CK+ as downloaded
+
+981 images, 48×48 grayscale PNGs, 7 classes (anger, contempt, disgust, fear, happy, sadness, surprise; no neutral). File names are `S<subject>_<sequence>_<frame>.png` and **every sequence contributes exactly 3 consecutive frames**.
+
+| Split (seed 42) | Images |
+|---|---|
+| train | 783 (708 after Keras holds out 10% for `validation_split`) |
+| test | 198 |
+| clean-protocol validation | 75 |
+
+These counts equal the ones in the official notebook's output (708 / 198) and the paper's Table 2 (783 / 198).
+
+**Leakage inside the CK+ split.** The notebook splits *images*, not subjects or sequences. With our seeded split, **180 of the 198 test images (91%) have a sibling frame from the same sequence in the training folder**, and 195 of 198 (98%) come from a subject who also appears in training (`results/ck/split_report.json`). The clean protocol fixes the test-set-as-validation problem but not this near-duplicate overlap, so CK+ accuracy stays optimistic under both protocols.
+
+### How the generators are built (`src/data.py`)
+
+- Both protocols train on the same augmented training subset (`validation_split=0.1`, `subset='training'`), exactly like the notebooks, so the 10% held-out slice is never trained on.
+- `paper`: that slice is ignored and the **test set** is the monitored validation data.
+- `clean`: the held-out slice (`subset='validation'`, rescale only, a stratified 10% of every class) is monitored instead. The test set is only used for the final evaluation.
+- `check_class_order` stops the run if Keras' class order differs from the config.
+
 ## Project layout
 
 ```
