@@ -137,6 +137,19 @@ All 100 epochs ran; the learning rate dropped to 1e-6 at epoch 46 and the best e
 
 The unaffected rows also agree (Happy 0.86 / 0.87 vs 0.862 / 0.874; Angry 0.53 / 0.60 vs 0.563 / 0.620; Fear 0.55 / 0.34 vs 0.557 / 0.356). The paper's accuracy is correct but its per-class labels are shifted.
 
+### CK+, clean protocol vs paper protocol (seed 42)
+
+Same model, same 708 training images, same seed, same test set. The only change is what early stopping and the learning-rate schedule watch: the **test set** (paper) or a **75-image slice held out from training** (clean).
+
+| | Paper protocol | Clean protocol |
+|---|---|---|
+| Test accuracy | **94.4%** (187/198) | **90.9%** (180/198) |
+| Macro F1 | 0.924 | 0.865 |
+| Epochs run / best epoch | 100 / 87 | 56 (early stopping fired) / 31 |
+| Training time | 2.2 min | 1.2 min |
+
+Under the clean protocol 7 more test images are misclassified. **Read this with care:** it is one seed and a 198-image test set, so a 95% interval on either accuracy is roughly ±3 to ±4 points and the two intervals overlap. The gap is consistent with the leakage argument (the paper protocol picks its best epoch using the test set) but a single run cannot prove it; repeating over several seeds would. The clean number is also still optimistic, because 91% of CK+ test images have a sibling frame in training (see above).
+
 ### Watching a long run
 
 `python scripts/watch_training.py results/rafdb/paper/train.log` shows a live terminal dashboard (progress, ETA, one accuracy chart). It only reads the log.
