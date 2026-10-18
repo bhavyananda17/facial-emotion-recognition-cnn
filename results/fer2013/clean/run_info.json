@@ -1,0 +1,42 @@
+{
+  "dataset": "fer2013",
+  "protocol": "clean",
+  "run_name": "clean",
+  "config": "configs/fer2013.yaml",
+  "started": "2026-10-19T00:16:44",
+  "git_commit": "b76b344",
+  "seed": 42,
+  "total_params": 2907984,
+  "trainable_params": 2903120,
+  "paper_total_params": 2907984,
+  "train_images": 25841,
+  "monitored_images": 2868,
+  "test_images": 7178,
+  "training_time_seconds": 6017.7,
+  "epochs_max": 100,
+  "epochs_run": 100,
+  "best_epoch": 100,
+  "stopped_early": false,
+  "final_learning_rate": 9.999999974752427e-07,
+  "device": {
+    "device": "GPU (Apple Metal)",
+    "gpus": [
+      "/physical_device:GPU:0"
+    ],
+    "machine": "arm64",
+    "processor": "arm",
+    "os": "macOS 26.6.2",
+    "python": "3.11.15",
+    "tensorflow": "2.18.1",
+    "keras": "3.8.0"
+  },
+  "metrics": {
+    "test_accuracy": 0.6475341320702146,
+    "test_loss": 0.9462751150131226,
+    "macro_f1": 0.6077864894890561,
+    "weighted_f1": 0.6414830697845983,
+    "macro_auc": 0.9102450364101095,
+    "n_test_images": 7178,
+    "paper_accuracy": 0.64
+  }
+}

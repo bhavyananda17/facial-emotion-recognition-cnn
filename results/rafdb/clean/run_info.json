@@ -1,0 +1,42 @@
+{
+  "dataset": "rafdb",
+  "protocol": "clean",
+  "run_name": "clean",
+  "config": "configs/rafdb.yaml",
+  "started": "2026-10-18T23:03:51",
+  "git_commit": "b76b344",
+  "seed": 42,
+  "total_params": 9985872,
+  "trainable_params": 9981008,
+  "paper_total_params": 9985872,
+  "train_images": 11046,
+  "monitored_images": 1225,
+  "test_images": 3068,
+  "training_time_seconds": 4364.0,
+  "epochs_max": 100,
+  "epochs_run": 100,
+  "best_epoch": 83,
+  "stopped_early": false,
+  "final_learning_rate": 9.999999960041972e-13,
+  "device": {
+    "device": "GPU (Apple Metal)",
+    "gpus": [
+      "/physical_device:GPU:0"
+    ],
+    "machine": "arm64",
+    "processor": "arm",
+    "os": "macOS 26.6.2",
+    "python": "3.11.15",
+    "tensorflow": "2.18.1",
+    "keras": "3.8.0"
+  },
+  "metrics": {
+    "test_accuracy": 0.8318122555410691,
+    "test_loss": 0.5061264634132385,
+    "macro_f1": 0.7455636171467367,
+    "weighted_f1": 0.830343817716489,
+    "macro_auc": 0.9668802167022746,
+    "n_test_images": 3068,
+    "paper_accuracy": 0.83
+  }
+}
