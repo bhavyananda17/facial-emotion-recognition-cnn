@@ -1,0 +1,19 @@
+# Tested on macOS 26 (Apple M5 Pro), Python 3.11.
+# TensorFlow 2.18 matches the version used in the paper (Table 3).
+tensorflow==2.18.1
+# Apple GPU support. tensorflow-metal 1.2.0 is the release built for TF 2.18.
+# Remove this line on Linux/Windows or to force CPU.
+tensorflow-metal==1.2.0; sys_platform == "darwin" and platform_machine == "arm64"
+# TF 2.18 only requires keras>=3.5, so pin the matching release explicitly.
+keras==3.8.0
+# numpy 1.26.4 is the version listed in the paper (Table 3).
+numpy==1.26.4
+scipy==1.17.1
+pillow==13.0.0
+scikit-learn==1.9.1
+matplotlib==3.11.2
+seaborn==0.13.2
+pandas==3.0.6
+PyYAML==6.0.3
+opencv-python==4.11.0.86
+kaggle==2.2.4

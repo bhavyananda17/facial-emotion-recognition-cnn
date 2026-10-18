@@ -1,0 +1,77 @@
+# CK+ (Extended Cohn-Kanade), source: FER_CK+.ipynb
+# Every value below is copied from the official notebook unless marked otherwise.
+
+dataset: ck
+kaggle_slug: shuvoalok/ck-dataset
+
+paths:
+  raw_dir: data/ck/raw          # Kaggle download, one folder per emotion
+  train_dir: data/ck/train      # created by our seeded 80/20 split
+  test_dir: data/ck/test
+
+# CK+ ships without a train/test split. The notebook makes one: 80/20 per
+# class after np.random.shuffle with NO seed. We add seed 42 (see README).
+split:
+  train_ratio: 0.8
+  seed: 42
+
+image:
+  size: [48, 48]
+  color_mode: grayscale
+
+# Class order = alphabetical folder order, which is what Keras'
+# flow_from_directory uses. Keys are folder names, values are display names.
+# train.py asserts that the generator's class_indices match this order.
+classes:
+  anger: Anger
+  contempt: Contempt
+  disgust: Disgust
+  fear: Fear
+  happy: Happy
+  sadness: Sadness
+  surprise: Surprise
+
+model:
+  conv_type: conv2d             # standard Conv2D for CK+
+  filters: [64, 128, 256, 512]  # one entry per conv block, 2 convs per block
+  kernel_size: 3
+  kernel_initializer: he_normal
+  block_dropout: 0.25
+  dense_units: 512
+  dense_dropout: 0.5
+
+training:
+  seed: 42                      # not in the original (no seeds anywhere)
+  batch_size: 32
+  epochs: 100
+  loss: categorical_crossentropy
+  optimizer: adam
+  learning_rate: 0.001
+  # The notebook also defines ExponentialDecay(0.001, decay_steps=10000,
+  # decay_rate=0.9) but never passes it to compile(); it is dead code.
+  # model.compile() receives Adam(learning_rate=0.001), so we use that.
+  validation_split: 0.1         # 10% of train per class held out by Keras
+
+augmentation:                   # applied to the training set only
+  rescale: 0.00392156862745098  # 1/255
+  rotation_range: 15
+  width_shift_range: 0.15
+  height_shift_range: 0.15
+  shear_range: 0.15
+  zoom_range: 0.15
+  horizontal_flip: true
+
+callbacks:
+  early_stopping:
+    monitor: val_loss
+    patience: 25
+    restore_best_weights: true
+  reduce_lr:
+    monitor: val_loss
+    factor: 0.001               # as in the notebook (very aggressive, see README)
+    patience: 10
+    min_delta: 0.0001
+
+paper:                          # reported numbers, for comparison only
+  test_accuracy: 0.95
+  total_params: 7057351

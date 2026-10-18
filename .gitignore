@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Datasets (downloaded from Kaggle, see README) — never commit
+data/
+
+# Trained models (27–38 MB each; regenerate with src.train)
+models/
+*.keras
+*.h5
+
+# Kaggle credentials
+kaggle.json
+
+# Paper PDF (CC BY-NC-ND, link to it instead)
+*.pdf
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+.ipynb_checkpoints/
