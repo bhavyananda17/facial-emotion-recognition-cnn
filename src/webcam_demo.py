@@ -23,6 +23,7 @@ import numpy as np
 from src.predict import DEFAULT_CONFIG, DEFAULT_PROTOCOL, load_model, predict_probs
 
 GREEN, WHITE, DARK = (80, 200, 80), (255, 255, 255), (30, 30, 30)
+WINDOW = "Facial emotion recognition (q to quit)"
 
 
 def find_largest_face(detector, gray, min_size):
@@ -76,9 +77,20 @@ def main():
     recent = deque(maxlen=max(args.smooth, 1))
     last = time.time()
     fps = 0.0
-    print(f"model: {cfg['dataset']} / {args.protocol}. Press q in the video window to quit.")
+    print(f"model: {cfg['dataset']} / {args.protocol}. Video source opened.")
+    # A window opened by a terminal program can appear BEHIND the terminal on macOS, so create it
+    # explicitly, move it to a visible spot and ask for it to stay on top.
+    cv2.namedWindow(WINDOW, cv2.WINDOW_NORMAL)
+    cv2.moveWindow(WINDOW, 40, 40)
+    try:
+        cv2.setWindowProperty(WINDOW, cv2.WND_PROP_TOPMOST, 1)
+    except cv2.error:
+        pass  # not supported by every OpenCV build; harmless
+    print(f"Window '{WINDOW}' created. If you cannot see it, check the Dock / Mission Control. "
+          "Press q in the video window to quit.")
     is_camera = args.source.isdigit()
     failed_reads = dark_frames = 0
+    first_frame = True
     while True:
         ok, frame = cap.read()
         if not ok:
@@ -91,6 +103,9 @@ def main():
             print("Stopped: the camera gave no frames (check System Settings > Privacy & Security > "
                   "Camera, and that no other app is using it)." if is_camera else "End of video.")
             break
+        if first_frame:
+            print(f"First frame received: {frame.shape[1]}x{frame.shape[0]}, mean brightness {frame.mean():.0f}")
+            first_frame = False
         failed_reads = 0
         if is_camera:
             frame = cv2.flip(frame, 1)  # mirror a live camera so it behaves like a mirror
@@ -120,7 +135,7 @@ def main():
         now = time.time()
         fps = 0.9 * fps + 0.1 / max(now - last, 1e-6)  # smoothed frames per second
         last = now
-        cv2.imshow("Facial emotion recognition (q to quit)", frame)
+        cv2.imshow(WINDOW, frame)
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
