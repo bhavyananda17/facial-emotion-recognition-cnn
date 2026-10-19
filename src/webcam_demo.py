@@ -78,7 +78,7 @@ def main():
     fps = 0.0
     print(f"model: {cfg['dataset']} / {args.protocol}. Press q in the video window to quit.")
     is_camera = args.source.isdigit()
-    failed_reads = 0
+    failed_reads = dark_frames = 0
     while True:
         ok, frame = cap.read()
         if not ok:
@@ -94,6 +94,12 @@ def main():
         failed_reads = 0
         if is_camera:
             frame = cv2.flip(frame, 1)  # mirror a live camera so it behaves like a mirror
+            # An all-black picture means macOS is not letting this app use the camera (common when the
+            # command is run from an editor's built-in terminal), or the lens is covered.
+            dark_frames = dark_frames + 1 if frame.mean() < 2 else 0
+            if dark_frames == 60:
+                print("Camera frames are all black. Run this from the macOS Terminal app and allow camera access "
+                      "(System Settings > Privacy & Security > Camera), and check the lens is uncovered.")
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         box = find_largest_face(detector, gray, args.min_face)
