@@ -4,7 +4,7 @@ A clean, reproducible re-implementation of
 
 > R. Raj and I. Demirkol, "An improved facial emotion recognition system using convolutional neural network for the optimization of human robot interaction", *Scientific Reports* 15:38940 (2025). [doi:10.1038/s41598-025-22835-0](https://doi.org/10.1038/s41598-025-22835-0)
 
-The three official Keras notebooks ([raj91ravi/Facial-Emotion-Recognition](https://github.com/raj91ravi/Facial-Emotion-Recognition)) are treated as the source of truth for hyperparameters. The paper provides context. The code here is a rewrite, not a copy of the notebooks.
+The three official Keras notebooks ([raj91ravi/Facial-Emotion-Recognition](https://github.com/raj91ravi/Facial-Emotion-Recognition)) are treated as the source of truth for hyperparameters. The paper provides context. 
 
 The model is trained on **CK+**, **FER2013** and **RAF-DB** under two protocols:
 
