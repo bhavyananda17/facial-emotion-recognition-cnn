@@ -77,11 +77,22 @@ def main():
     last = time.time()
     fps = 0.0
     print(f"model: {cfg['dataset']} / {args.protocol}. Press q in the video window to quit.")
+    is_camera = args.source.isdigit()
+    failed_reads = 0
     while True:
         ok, frame = cap.read()
         if not ok:
+            # A camera that was only just authorised can return empty frames for a moment while it
+            # starts, so a live camera gets about 5 seconds of retries. A video file just ended.
+            failed_reads += 1
+            if is_camera and failed_reads < 50:
+                time.sleep(0.1)
+                continue
+            print("Stopped: the camera gave no frames (check System Settings > Privacy & Security > "
+                  "Camera, and that no other app is using it)." if is_camera else "End of video.")
             break
-        if args.source.isdigit():
+        failed_reads = 0
+        if is_camera:
             frame = cv2.flip(frame, 1)  # mirror a live camera so it behaves like a mirror
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
