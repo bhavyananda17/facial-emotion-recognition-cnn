@@ -2,6 +2,7 @@
 
     python scripts/watch_training.py results/rafdb/paper/train.log
     python scripts/watch_training.py results/rafdb/paper/train.log --once   # print once and exit
+    python scripts/watch_training.py results/*/paper/train.log --once       # all datasets on one screen
 
 It only reads the log file, so it is safe to start and stop at any time.
 Uses the standard library only.
@@ -39,7 +40,7 @@ def parse(log_path):
     return rows, total, current, done, stopped, final
 
 
-def chart(rows, total, width, height=12):
+def chart(rows, total, width, height=12, details=True):
     """One chart: train accuracy (o) and test/val accuracy (●) against epoch.
 
     The x axis always spans all `total` epochs, so the curves fill in from left to right.
@@ -60,8 +61,37 @@ def chart(rows, total, width, height=12):
     lines.append(f"{DIM}      └" + "─" * width + RESET)
     pad = " " * (width // 2 - 4)
     lines.append(f"{DIM}       1{pad}epoch{pad}{total}{RESET}")
-    lines.append(f"       {BLUE}o{RESET} train accuracy    {ORANGE}●{RESET} test/val accuracy")
+    if details:  # the legend line is skipped in the compact multi-run view
+        lines.append(f"       {BLUE}o{RESET} train accuracy    {ORANGE}●{RESET} test/val accuracy")
     return lines
+
+
+NAMES = {"ck": "CK+", "rafdb": "RAF-DB", "fer2013": "FER2013"}
+
+
+def label_for(log_path):
+    """results/rafdb/paper/train.log -> 'RAF-DB · paper'."""
+    parts = Path(log_path).parts
+    if len(parts) >= 3 and parts[-3] in NAMES:
+        return f"{NAMES[parts[-3]]} · {parts[-2]}"
+    return str(log_path)
+
+
+def render_compact(log_path, width):
+    """A short view of one run (header + small accuracy chart) so several fit on one screen."""
+    rows, total, current, done, stopped, final = parse(log_path)
+    head = f"{BOLD}{label_for(log_path)}{RESET}"
+    if not rows:
+        return f"{head}  waiting for the first epoch..."
+    n, last = len(rows), rows[-1]
+    total = total or 100
+    state = (f"{GREEN}FINISHED{RESET}" if done else f"{ORANGE}EARLY-STOPPED{RESET}" if stopped
+             else f"{BLUE}TRAINING{RESET}")
+    line = (f"{head}   {state} {n}/{total}   train acc {last['acc']:.3f}   test/val acc {BOLD}{last['vacc']:.3f}{RESET}"
+            f"   {BLUE}o{RESET} train {ORANGE}●{RESET} test/val")
+    if final:
+        line += f"   {GREEN}{final.replace('TEST ACCURACY: ', 'final test: ')}{RESET}"
+    return "\n".join([line] + chart(rows, total, min(width - 8, 90), height=6, details=False))
 
 
 def render(log_path):
@@ -104,23 +134,28 @@ def render(log_path):
     return "\n".join(out)
 
 
+def render_all(logs):
+    """One log: the full dashboard. Several logs: the compact view of each, stacked."""
+    if len(logs) == 1:
+        return render(logs[0])
+    width = min(shutil.get_terminal_size().columns, 100)
+    return "\n\n".join(render_compact(log, width) for log in logs)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("log", help="path to a train.log")
+    p.add_argument("logs", nargs="+", help="path(s) to train.log; several logs are shown together, compactly")
     p.add_argument("--once", action="store_true", help="print once instead of refreshing")
     p.add_argument("--interval", type=float, default=5, help="seconds between refreshes")
     args = p.parse_args()
-    if args.once:
-        print(render(args.log))
-        return
-    if not sys.stdout.isatty():  # piped output: just print once
-        print(render(args.log))
+    if args.once or not sys.stdout.isatty():  # piped output: just print once
+        print(render_all(args.logs))
         return
     # Alternate screen + cursor-home redraw: one view that updates in place, no stacking.
     sys.stdout.write("\033[?1049h\033[?25l")
     try:
         while True:
-            frame = render(args.log) + f"\n\n{DIM}refreshing every {args.interval:.0f}s, Ctrl+C to quit{RESET}"
+            frame = render_all(args.logs) + f"\n\n{DIM}refreshing every {args.interval:.0f}s, Ctrl+C to quit{RESET}"
             sys.stdout.write("\033[H" + "\033[K\n".join(frame.split("\n")) + "\033[K\033[J")
             sys.stdout.flush()
             time.sleep(args.interval)
