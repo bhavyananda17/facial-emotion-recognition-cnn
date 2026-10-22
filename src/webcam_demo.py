@@ -54,6 +54,35 @@ def draw_prediction(frame, box, names, probs, fps, ms):
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, WHITE, 1, cv2.LINE_AA)
 
 
+def list_cameras(max_index=4):
+    """Open camera indexes 0..max_index-1, save one frame from each and print what was found.
+
+    On a Mac with an iPhone nearby, Continuity Camera can make the phone camera index 0, so the
+    built-in webcam may be 1 or 2. Open the saved pictures to see which index is which.
+    """
+    import tempfile
+    from pathlib import Path
+
+    out = Path(tempfile.mkdtemp(prefix="cameras_"))
+    for i in range(max_index):
+        cap = cv2.VideoCapture(i)
+        frame = None
+        if cap.isOpened():
+            for _ in range(30):  # a camera needs a moment to start
+                ok, frame = cap.read()
+                if ok:
+                    break
+                time.sleep(0.1)
+        cap.release()
+        if frame is None:
+            print(f"index {i}: no camera")
+            continue
+        path = out / f"camera_{i}.png"
+        cv2.imwrite(str(path), frame)
+        print(f"index {i}: {frame.shape[1]}x{frame.shape[0]}, brightness {frame.mean():.0f}, picture saved to {path}")
+    print(f"\nOpen the pictures to see which index is your Mac's webcam, then run the demo with --source <index>.")
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--config", default=DEFAULT_CONFIG)
@@ -61,8 +90,12 @@ def main():
     p.add_argument("--source", default="0", help="camera index (0 = built-in) or a video file")
     p.add_argument("--smooth", type=int, default=5, help="average the last N predictions (1 = no smoothing)")
     p.add_argument("--min-face", type=int, default=80, help="ignore faces smaller than this many pixels")
+    p.add_argument("--list-cameras", action="store_true", help="save a picture from each camera index and exit")
     p.add_argument("--save-frame", help="process the first frame with a face, save it here and exit (for testing)")
     args = p.parse_args()
+    if args.list_cameras:
+        list_cameras()
+        return
 
     model, cfg = load_model(args.config, args.protocol)
     names, size = cfg["class_names"], cfg["image"]["size"]
